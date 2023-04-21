@@ -11,7 +11,7 @@ public class Main {
 
         Stream<String> lines = Reader.read(path);
         Stream<Order> orders = Parser.parse(lines);
-        Map<String, Book> books = orders.collect(new Sorter());
+        Map<String, Book> books = orders.parallel().collect(new Sorter());
         System.out.println("Books: " + books.size());
         books.values().forEach(System.out::println);
 
