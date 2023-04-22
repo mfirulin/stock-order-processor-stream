@@ -1,21 +1,16 @@
 import java.util.Objects;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Book {
     
     private static class Pair {
         int buy;
         int sell;
-
-        void merge(Pair other) {
-            buy += other.buy;
-            sell += other.sell;
-        }
     }
 
     private final String name;
-    private Map<Float, Pair> pairs = new HashMap<>();
+    private Map<Float, Pair> pairs = new TreeMap<>();
 
     public Book(String name) {
         this.name = name;
@@ -28,7 +23,8 @@ public class Book {
             if (thisPair == null) {
                 pairs.put(key, otherPair);
             } else {
-                thisPair.merge(otherPair);
+                thisPair.buy += otherPair.buy;
+                thisPair.sell += otherPair.sell;
             }
         }
     }
@@ -56,6 +52,7 @@ public class Book {
         builder.append(' ');
         builder.append("size=");
         builder.append(pairs.size());
+
         // builder.append('\n');
         // for (Map.Entry<Float, Pair> entry : pairs.entrySet()) {
         //     builder.append(
@@ -63,6 +60,7 @@ public class Book {
         //         entry.getValue().buy, entry.getKey(), entry.getValue().sell)
         //     );
         // }
+
         builder.append(']');
         return builder.toString();
     }

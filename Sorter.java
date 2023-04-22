@@ -54,7 +54,7 @@ public class Sorter implements Collector<Order, Map<String, Book>, Map<String, B
         return Collections.unmodifiableSet(
             EnumSet.of(
                 Characteristics.UNORDERED, 
-                Characteristics.CONCURRENT, 
+                // Characteristics.CONCURRENT, 
                 Characteristics.IDENTITY_FINISH
             )
         );

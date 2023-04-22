@@ -1,4 +1,5 @@
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 public class Main {
@@ -11,10 +12,13 @@ public class Main {
 
         Stream<String> lines = Reader.read(path);
         Stream<Order> orders = Parser.parse(lines);
-        Map<String, Book> books = orders.parallel().collect(new Sorter());
-        System.out.println("Books: " + books.size());
-        books.values().forEach(System.out::println);
+        Map<String, Book> books = orders.collect(new Sorter());
 
         System.out.println("Time taken: " + (System.nanoTime() - start) / 1_000_000 + " ms");
+
+        System.out.println("Books: " + books.size());
+        books.entrySet().stream()
+            .sorted(Entry.comparingByKey())
+            .forEachOrdered(System.out::println);
     }
 }

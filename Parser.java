@@ -1,7 +1,5 @@
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -9,17 +7,13 @@ import java.util.Set;
 public class Parser {
 
     public static Stream<Order> parse(Stream<String> lines) {
-        Map<Boolean, List<Order>> orders = lines
+        Map<Boolean, Set<Order>> orders = lines
             .parallel()
             .map(Parser::parseOrder)
             .filter(Objects::nonNull)
-            .collect(Collectors.partitioningBy(Order::isNoneOperationOrder));
+            .collect(Collectors.partitioningBy(Order::isNoneOperationOrder, Collectors.toSet()));
 
-        // For some reason solution with
-        // partitioningBy(Order::isNoneOperationOrder, toSet()))
-        // works slower than default collector toList.
-        // So move manually a list to a set for quick removal.
-        Set<Order> addOrders = new HashSet<>(orders.get(false));
+        Set<Order> addOrders = orders.get(false);
         addOrders.removeAll(orders.get(true));
 
         return addOrders.stream();
